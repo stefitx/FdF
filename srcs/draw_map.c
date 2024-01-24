@@ -25,15 +25,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void fill_image_with_color(t_data *img, float x, float y, float z)
+void fill_image_with_color(t_data *img, t_point *coord, int i)
 {
 	int iso_y;
 	int iso_x;
 
-	iso_y = get_iso_y(x, y, z);
-	iso_x = get_iso_x(x, y);
+	iso_y = get_iso_y(coord[i].x, coord[i].y, coord[i].z);
+	iso_x = get_iso_x(coord[i].x, coord[i].y);
 	if (400 + iso_x < 800 && 300 + iso_y < 600)
-		my_mlx_pixel_put(img, 400 + iso_x, 300 + iso_y, 0xF8C8DC);
+		my_mlx_pixel_put(img, 400 + iso_x, 300 + iso_y, coord[i].color);
 }
 
 void draw_map(void *mlx, void *win, t_map *map)
@@ -46,7 +46,7 @@ void draw_map(void *mlx, void *win, t_map *map)
     i = 0;
     while (i < map->size)
     {
-    	fill_image_with_color(&img, map->coord_array[i].x, map->coord_array[i].y, map->coord_array[i].z);
+    	fill_image_with_color(&img, map->coord_array, i);
     	i++;
     }
     mlx_put_image_to_window(mlx, win, img.img, 0, 0);

@@ -21,6 +21,8 @@ void init_map(t_map *map, char *filename)
 	map->width = 0;
 	map->filename = filename;
 	map->coord_array = NULL;
+	map->scale = 1;
+	map->bounce = 1;
 	map->max = 0;
 	map->min = 0;
 }

@@ -36,6 +36,8 @@ typedef struct	s_map
 	int		size;
 	char	*filename;
 	t_point *coord_array;
+	float	scale;
+	float	bounce;
 	int		max;
 	int		min;
 }	t_map;

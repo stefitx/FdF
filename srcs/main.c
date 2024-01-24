@@ -16,13 +16,13 @@
 #include "../libft/libft.h"
 #include <stdio.h>
 
-int	main(int argc, char **argv)
+int	main	(int argc, char **argv)
 {
 	 void	*mlx;
 	 void	*win;
 	t_map	map;
 	t_point *coord_array;
-	t_input input = {30, -30, 30};
+	//t_input input = {30, -30, 30};
 
 	if (argc == 2)
 	{
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 		coord_array = NULL;
 		init_map(&map,argv[1]);
 		parse_map(&map, &coord_array);
-		draw_map(mlx, win, &map, input);
+		draw_map(mlx, win, &map);
 		mlx_loop(mlx);
 	}
 	else
