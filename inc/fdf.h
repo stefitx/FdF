@@ -18,8 +18,8 @@
 # include <stdlib.h>
 
 
-# define WIN_WIDTH 800
-# define WIN_LEN 600
+# define WIDTH 800
+# define LEN 600
 
 typedef struct s_point
 {
@@ -29,6 +29,16 @@ typedef struct s_point
 	long	color;
 }	t_point;
 
+typedef struct s_iso
+{
+	float	x;
+	float	y;
+	float	left_x;
+	float	right_x;
+	float	min_y;
+	float	max_y;
+}	t_iso;
+
 typedef struct	s_map
 {
 	int		length;
@@ -36,8 +46,8 @@ typedef struct	s_map
 	int		size;
 	char	*filename;
 	t_point *coord_array;
+	t_iso	*iso_array;
 	float	scale;
-	float	bounce;
 	int		max;
 	int		min;
 }	t_map;
@@ -78,6 +88,8 @@ void	add_point(t_map *map, t_point *coord_array, char *line, int i);
 void init_map(t_map *map, char *filename);
 //void draw_map(void *mlx, void *win, t_map *map, t_input input);
 void	rotation(t_point *coord, t_input input);
+void	scale_iso(t_map *map);
+void	change_to_iso(t_map *map, t_point *coord);
 
 
 

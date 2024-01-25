@@ -27,7 +27,7 @@ int	main	(int argc, char **argv)
 	if (argc == 2)
 	{
 		 mlx = mlx_init();
-		 win = mlx_new_window(mlx, 800, 600, "FDF");
+		 win = mlx_new_window(mlx, WIDTH, LEN, "FDF");
 		coord_array = NULL;
 		init_map(&map,argv[1]);
 		parse_map(&map, &coord_array);

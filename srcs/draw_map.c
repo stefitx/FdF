@@ -25,48 +25,54 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void fill_image_with_color(t_data *img, t_point *coord, int i)
-{
-	int iso_y;
-	int iso_x;
-
-	iso_y = get_iso_y(coord[i].x, coord[i].y, coord[i].z);
-	iso_x = get_iso_x(coord[i].x, coord[i].y);
-	if (400 + iso_x < 800 && 300 + iso_y < 600)
-		my_mlx_pixel_put(img, 400 + iso_x, 300 + iso_y, coord[i].color);
+void fill_image(t_data *img, t_point *coord, int i, t_map *map) {
+    int iso_x = (int)((WIDTH / 2) + map->iso_array[i].x);
+    int iso_y = (int)((LEN / 2) + map->iso_array[i].y);
+    
+    if (iso_x >= 0 && iso_x < WIDTH && iso_y >= 0 && iso_y < LEN) {
+        my_mlx_pixel_put(img, iso_x, iso_y, coord[i].color);
+    }
 }
 
-void draw_map(void *mlx, void *win, t_map *map)
-{
-    t_data img;
-    int	i;
+// void fill_image(t_data *img, t_point *coord, int i, t_map *map)
+// {
+// 	// change_to_iso(map, coord);
+// 	// scale_iso(map);
+// 	if ((WIDTH/2) + map->iso_array[i].x < WIDTH && (LEN/4) + map->iso_array[i].y < LEN)
+// 		my_mlx_pixel_put(img, (int)((WIDTH/2) + map->iso_array->x), (int)((LEN/4) + map->iso_array->y), coord[i].color);
+// }
 
-    img.img = mlx_new_image(mlx, 800, 600);
+// void draw_map(void *mlx, void *win, t_map *map)
+// {
+//     t_data img;
+//     int	i;
+
+//     img.img = mlx_new_image(mlx, WIDTH, LEN);
+//     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+//     ///scale_coord(map);
+//     i = 0;
+//     while (i < map->size)
+//     {
+//     	fill_image(&img, map->coord_array, i, map);
+//     	i++;
+//     }
+//     mlx_put_image_to_window(mlx, win, img.img, 0, 0);
+// }
+
+void draw_map(void *mlx, void *win, t_map *map) {
+    t_data img;
+    int i;
+
+    // Convert to isometric and scale outside of the drawing loop
+    change_to_iso(map, map->coord_array);
+    scale_iso(map);
+
+    img.img = mlx_new_image(mlx, WIDTH, LEN);
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    i = 0;
-    while (i < map->size)
-    {
-    	fill_image_with_color(&img, map->coord_array, i);
-    	i++;
+
+    for (i = 0; i < map->size; i++) {
+        fill_image(&img, map->coord_array, i, map);
     }
+
     mlx_put_image_to_window(mlx, win, img.img, 0, 0);
 }
-
-// void	draw_map(void	*mlx, void	*win, t_map *map)
-// {
-// 		t_data	img;
-// 		int	i;
-
-// 		img.img = mlx_new_image(mlx, 800, 600);
-
-// 		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-// 								&img.endian);
-// 		i = 0;
-// 		while (i < map->size)
-// 		{
-// 			if (400+ (get_iso_x((float)newcoord.x, (float)newcoord.z) < 800) && 300 +(get_iso_y((float)newcoord.x, (float)newcoord.y, (float)newcoord.z)) < 600)
-// 				my_mlx_pixel_put(&img, get_iso_x((float)newcoord.x, (float)newcoord.z), get_iso_y((float)newcoord.x, (float)newcoord.y, (float)newcoord.z), 0xffffff);
-// 			i++;
-// 		}
-// 		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-// }
