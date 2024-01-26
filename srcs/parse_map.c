@@ -45,11 +45,11 @@ void	add_point(t_map *map, t_point *coord_array, char *line, int row)
 		col++;
 	}
 	free_matrix(split_line, temp);
-	if (temp != map->width)
-	{
-		write (2, "Invalid map\n", 12);
-		exit(0);
-	}
+	// if (temp != map->width)
+	// {
+	// 	write (2, "Invalid map\n", 12);
+	// 	exit(0);
+	// }
 }
 
 void	get_map_dimensions(t_map *map)

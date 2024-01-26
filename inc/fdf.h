@@ -18,8 +18,9 @@
 # include <stdlib.h>
 
 
-# define WIDTH 800
-# define LEN 600
+# define WIDTH 1000
+# define BORDER 950
+# define LEN 800
 
 typedef struct s_point
 {
@@ -33,10 +34,6 @@ typedef struct s_iso
 {
 	float	x;
 	float	y;
-	float	left_x;
-	float	right_x;
-	float	min_y;
-	float	max_y;
 }	t_iso;
 
 typedef struct	s_map
@@ -47,9 +44,13 @@ typedef struct	s_map
 	char	*filename;
 	t_point *coord_array;
 	t_iso	*iso_array;
+	float	offset_x;
+	float	offset_y;
+	float	max_iso_x;
+	float	min_iso_x;
+	float	max_iso_y;
+	float	min_iso_y;
 	float	scale;
-	int		max;
-	int		min;
 }	t_map;
 
 typedef struct	s_data
@@ -61,12 +62,6 @@ typedef struct	s_data
 	int		endian;
 	t_point *map;
 }				t_data;
-
-typedef struct s_input {
-    float rotx;
-    float roty;
-    float rotz;
-} t_input;
 
  void malloc_map(t_map *map_len);
 void	map_fill(char *filename, t_map *map_len);
@@ -87,10 +82,9 @@ void	get_map_dimensions(t_map *map);
 void	add_point(t_map *map, t_point *coord_array, char *line, int i);
 void init_map(t_map *map, char *filename);
 //void draw_map(void *mlx, void *win, t_map *map, t_input input);
-void	rotation(t_point *coord, t_input input);
 void	scale_iso(t_map *map);
 void	change_to_iso(t_map *map, t_point *coord);
-
+void	draw_line(t_data *img, int x0, int y0, int x1, int y1, int color);
 
 
 #endif

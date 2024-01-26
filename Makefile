@@ -34,7 +34,7 @@ LIBFT_DIR	= libft
 %.o: %.c $(HEADER) $(MLX_HEADER) $(LIB_H) Makefile
 	$(CC) $(CFLAGS) $(INCLUDE) -lmlx -c $< -o $@
 
-${NAME}: libft.a libmlx.a ${OBJS}
+${NAME}: libft.a libmlx.a ${OBJS} inc/fdf.h
 	$(CC) $(CFLAGS) -o ${NAME} ${OBJS} $(INCLUDE) -L $(MLX_DIR) -lmlx -L $(LIBFT_DIR) -lft -lm -framework AppKit -framework OpenGL
 
 libmlx.a:
