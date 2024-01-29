@@ -23,7 +23,7 @@ int	main	(int argc, char **argv)
 	t_map	map;
 	t_point *coord_array;
 	//t_input input = {30, -30, 30};
-
+ 
 	if (argc == 2)
 	{
 		 mlx = mlx_init();

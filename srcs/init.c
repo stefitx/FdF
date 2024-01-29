@@ -34,17 +34,15 @@ void	init_map(t_map *map, char *filename)
 void	change_to_iso(t_map *map, t_point *coord)
 {
 	int	i;
-	int	j;
 
 	map->iso_array = (t_iso *)malloc(sizeof(t_iso) * map->size);
 	if (!map->iso_array)
 		return ;
-	i = (map->size - 1);
-	j = 0;
-	while (i > 0 && j < map->size)
+	i = 0;
+	while (i < map->size)
 	{
-		map->iso_array[i].x = get_iso_x(coord[j].x, coord[j].y);
-		map->iso_array[i].y = get_iso_y(coord[j].x, coord[j].y, coord[j].z);
+		map->iso_array[i].x = get_iso_x(coord[i].x, coord[i].y, coord[i].z);
+		map->iso_array[i].y = get_iso_y(coord[i].x, coord[i].y, coord[i].z);
 		if (map->iso_array[i].x < map->min_iso_x)
             map->min_iso_x = map->iso_array[i].x;
         if (map->iso_array[i].x > map->max_iso_x)
@@ -53,8 +51,7 @@ void	change_to_iso(t_map *map, t_point *coord)
             map->min_iso_y = map->iso_array[i].y;
         if (map->iso_array[i].y > map->max_iso_y)
             map->max_iso_y = map->iso_array[i].y;
-	i--;
-	j++;
+	i++;
 	}
 }
 
@@ -71,8 +68,8 @@ void scale_iso(t_map *map)
 	i = 0;
 	while (i < map->size)
 	{
-		if (map->scale < 1.5)
-			map->scale = 1;
+		// if (map->scale < 1.5)
+		// 	map->scale = 1;
 		map->iso_array[i].x = (map->iso_array[i].x - map->min_iso_x) * map->scale;
 		map->iso_array[i].y = (map->iso_array[i].y - map->min_iso_y) * map->scale;
 		i++;

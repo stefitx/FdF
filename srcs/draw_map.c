@@ -113,7 +113,7 @@ void draw_map(void *mlx, void *win, t_map *map)
 //         int iso_y0 = (int)(map->offset_y + map->iso_array[i].y);
 //         int iso_x1 = (int)(map->offset_x + map->iso_array[i + 1].x);
 //         int iso_y1 = (int)(map->offset_y + map->iso_array[i + 1].y);
-//        // draw_line(&img, iso_x0, iso_y0, iso_x1, iso_y1, map->coord_array[i].color);
+//        draw_line(&img, iso_x0, iso_y0, iso_x1, iso_y1, map->coord_array[i].color);
 //     i++;
 //     }
 
