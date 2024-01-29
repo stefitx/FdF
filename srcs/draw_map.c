@@ -76,46 +76,42 @@ void fill_image(t_data *img, t_point *coord, int i, t_map *map)
     }
 }
 
+void draw_line_between_points(t_data *img, t_map *map, int idx1, int idx2)
+{
+    int iso_x0 = (int)(map->offset_x + map->iso_array[idx1].x);
+    int iso_y0 = (int)(map->offset_y + map->iso_array[idx1].y);
+    int iso_x1 = (int)(map->offset_x + map->iso_array[idx2].x);
+    int iso_y1 = (int)(map->offset_y + map->iso_array[idx2].y);
+    draw_line(img, iso_x0, iso_y0, iso_x1, iso_y1, map->iso_array[idx1].color);
+}
+
 void draw_map(void *mlx, void *win, t_map *map)
 {
     t_data img;
-    int	i;
+    int i;
 
     change_to_iso(map, map->coord_array);
     scale_iso(map);
-
     img.img = mlx_new_image(mlx, WIDTH, LEN);
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    i = 0;
-    while (i < map->size)
+    map->img = &img;
+    for (i = 0; i < map->size; i++)
     {
-    	fill_image(&img, map->coord_array, i, map);
-    	i++;
+        if ((i + 1) % map->width != 0)
+        {
+            if (map->iso_array[i].color == 0)
+                map->iso_array[i].color = 0x00FFFF;
+            draw_line_between_points(&img, map, i, i + 1);
+        }
+        if (i < map->size - map->width)
+        {
+            if (map->iso_array[i + 1].color == 0)
+                map->iso_array[i].color = 0xFF00FF;
+            draw_line_between_points(&img, map, i, i + map->width);
+        }
     }
     mlx_put_image_to_window(mlx, win, img.img, 0, 0);
 }
 
-// void draw_map(void *mlx, void *win, t_map *map)
-// {
-//     t_data img;
-//     int i;
 
-//     change_to_iso(map, map->coord_array);
-//     scale_iso(map);
 
-//     img.img = mlx_new_image(mlx, WIDTH, LEN);
-//     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-
-//     i = 0;
-//     while (i < map->size)
-//     {
-//         int iso_x0 = (int)(map->offset_x + map->iso_array[i].x);
-//         int iso_y0 = (int)(map->offset_y + map->iso_array[i].y);
-//         int iso_x1 = (int)(map->offset_x + map->iso_array[i + 1].x);
-//         int iso_y1 = (int)(map->offset_y + map->iso_array[i + 1].y);
-//        draw_line(&img, iso_x0, iso_y0, iso_x1, iso_y1, map->coord_array[i].color);
-//     i++;
-//     }
-
-//     mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-// }

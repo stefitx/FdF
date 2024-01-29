@@ -15,7 +15,7 @@
 #include "../mlx/mlx.h"
 #include "../libft/libft.h"
 
-void	init_map(t_map *map, char *filename)
+void	init_map(t_map *map, char *filename, void *mlx, void *win)
 {
 	map->length = 0;
 	map->width = 0;
@@ -29,6 +29,8 @@ void	init_map(t_map *map, char *filename)
 	map->min_iso_y = FLT_MAX;
 	map->max_iso_x = -FLT_MAX;
 	map->max_iso_y = -FLT_MAX;
+	map->mlx = mlx;
+    map->win = win;
 }
 
 void	change_to_iso(t_map *map, t_point *coord)
@@ -43,6 +45,7 @@ void	change_to_iso(t_map *map, t_point *coord)
 	{
 		map->iso_array[i].x = get_iso_x(coord[i].x, coord[i].y, coord[i].z);
 		map->iso_array[i].y = get_iso_y(coord[i].x, coord[i].y, coord[i].z);
+		map->iso_array[i].color = map->coord_array[i].color;
 		if (map->iso_array[i].x < map->min_iso_x)
             map->min_iso_x = map->iso_array[i].x;
         if (map->iso_array[i].x > map->max_iso_x)
@@ -68,8 +71,6 @@ void scale_iso(t_map *map)
 	i = 0;
 	while (i < map->size)
 	{
-		// if (map->scale < 1.5)
-		// 	map->scale = 1;
 		map->iso_array[i].x = (map->iso_array[i].x - map->min_iso_x) * map->scale;
 		map->iso_array[i].y = (map->iso_array[i].y - map->min_iso_y) * map->scale;
 		i++;

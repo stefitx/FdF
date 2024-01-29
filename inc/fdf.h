@@ -34,7 +34,18 @@ typedef struct s_iso
 {
 	float	x;
 	float	y;
+	long	color;
 }	t_iso;
+
+typedef struct	s_data
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	t_point *map;
+}	t_data;
 
 typedef struct	s_map
 {
@@ -51,17 +62,10 @@ typedef struct	s_map
 	float	max_iso_y;
 	float	min_iso_y;
 	float	scale;
+	void	*mlx;
+	void	*win;
+	t_data	*img;
 }	t_map;
-
-typedef struct	s_data
-{
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	t_point *map;
-}				t_data;
 
  void malloc_map(t_map *map_len);
 void	map_fill(char *filename, t_map *map_len);
@@ -80,7 +84,7 @@ int get_color(char *line);
 void	parse_map(t_map *map, t_point **coord_array);
 void	get_map_dimensions(t_map *map);
 void	add_point(t_map *map, t_point *coord_array, char *line, int i);
-void init_map(t_map *map, char *filename);
+void init_map(t_map *map, char *filename, void *mlx, void *win);
 //void draw_map(void *mlx, void *win, t_map *map, t_input input);
 void	scale_iso(t_map *map);
 void	change_to_iso(t_map *map, t_point *coord);

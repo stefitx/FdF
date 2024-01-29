@@ -39,7 +39,7 @@ void	add_point(t_map *map, t_point *coord_array, char *line, int row)
 		if (split_color[1] != NULL)
 			coord_array[index].color = ft_atoi_base(split_color[1], 16);
 		else
-			coord_array[index].color = 0xF8C8DC;
+			coord_array[index].color = 0;
 		if (split_color[0] != NULL && split_color[0] != NULL)
 			free_matrix(split_color, 2);
 		col++;
