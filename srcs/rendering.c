@@ -58,3 +58,24 @@ float	get_iso_y(float x, float y, float z)
 	y = temp * sin(angz) + cos(angz) * y;
 	return (y);
 }
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->len + x * (data->bits / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	draw_map(void *mlx, void *win, t_map *map)
+{
+	t_data	img;
+
+	change_to_iso(map, map->coord_array);
+	scale_iso(map);
+	img.img = mlx_new_image(mlx, WIDTH, LEN);
+	img.addr = mlx_get_data_addr(img.img, &img.bits, &img.len, &img.endian);
+	map->img = &img;
+	draw_map_cont(map, &img);
+	mlx_put_image_to_window(mlx, win, img.img, 0, 0);
+}

@@ -15,6 +15,18 @@
 #include "../mlx/mlx.h"
 #include "../libft/libft.h"
 
+void	fill_z(t_point *coord_array, char **split_color, int index)
+{
+	if (split_color[0] != NULL)
+		coord_array[index].z = (float)ft_atoi(split_color[0]);
+	if (split_color[1] != NULL)
+		coord_array[index].color = ft_atoi_base(split_color[1], 16);
+	else
+		coord_array[index].color = 0;
+	if (split_color[0] != NULL && split_color[0] != NULL)
+		free_matrix(split_color, 2);
+}
+
 void	add_point(t_map *map, t_point *coord_array, char *line, int row)
 {
 	char	**split_line;
@@ -34,38 +46,23 @@ void	add_point(t_map *map, t_point *coord_array, char *line, int row)
 		coord_array[index].x = row;
 		coord_array[index].y = col;
 		split_color = ft_split(split_line[col], ',');
-		if (split_color[0] != NULL)
-			coord_array[index].z = (float)ft_atoi(split_color[0]);
-		if (split_color[1] != NULL)
-			coord_array[index].color = ft_atoi_base(split_color[1], 16);
-		else
-			coord_array[index].color = 0;
-		if (split_color[0] != NULL && split_color[0] != NULL)
-			free_matrix(split_color, 2);
+		fill_z(coord_array, split_color, index);
 		col++;
 	}
 	free_matrix(split_line, temp);
-	// if (temp != map->width)
-	// {
-	// 	write (2, "Invalid map\n", 12);
-	// 	exit(0);
-	// }
 }
 
 void	get_map_dimensions(t_map *map)
 {
 	char	*line;
-	int	fd;
+	int		fd;
 
 	fd = open(map->filename, O_RDONLY);
 	if (fd < 0)
-	{
-		write (2, "Error opening map", 17);
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	line = get_next_line(fd);
 	if (line == NULL)
-		return ;
+		exit(EXIT_FAILURE);
 	else
 	{
 		map->width = count_strings(line, ' ');
@@ -85,8 +82,8 @@ void	get_map_dimensions(t_map *map)
 
 void	parse_map(t_map *map, t_point **coord_array)
 {
-	int	fd;
-	int	i;
+	int		fd;
+	int		i;
 	char	*line;
 
 	fd = open(map->filename, O_RDONLY);
@@ -98,10 +95,7 @@ void	parse_map(t_map *map, t_point **coord_array)
 	get_map_dimensions(map);
 	*coord_array = (t_point *)malloc(sizeof(t_point) * map->size);
 	if (*coord_array == NULL)
-	{
-		write (2, "Error allocating array", 22);
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	line = get_next_line(fd);
 	i = 0;
 	while (i < map->length && line != NULL)

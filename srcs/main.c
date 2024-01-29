@@ -16,43 +16,42 @@
 #include "../libft/libft.h"
 #include <stdio.h>
 
-int key_hook(int keycode, t_map *map)
+int	esc_hook(int keycode, t_map *map)
 {
-    if (keycode == 53)
-    {
-    	free(map->coord_array);
-    	free(map->iso_array);
-		mlx_destroy_image(map->mlx, map->img->img);
+	if (keycode == 53)
+	{
 		mlx_destroy_window(map->mlx, map->win);
 		exit(EXIT_SUCCESS);
 	}
-    return (0);
+	return (0);
 }
 
-
-
-int	main	(int argc, char **argv)
+int	close_hook(t_map *map)
 {
-	 void	*mlx;
+	mlx_destroy_window(map->mlx, map->win);
+	exit(EXIT_SUCCESS);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	void	*mlx;
 	void	*win;
 	t_map	map;
-	t_point *coord_array;
-	//t_input input = {30, -30, 30};
- 
+
 	if (argc == 2)
 	{
-		 mlx = mlx_init();
-		 win = mlx_new_window(mlx, WIDTH, LEN, "FDF");
-		coord_array = NULL;
-		init_map(&map,argv[1], mlx, win);
-		map.mlx = mlx;  // Store the mlx pointer in the map structure
-        map.win = win;
-		parse_map(&map, &coord_array);
+		mlx = mlx_init();
+		win = mlx_new_window(mlx, WIDTH, LEN, "FDF");
+		init_map(&map, argv[1], mlx, win);
+		parse_map(&map, &map.coord_array);
 		draw_map(mlx, win, &map);
-	//	mlx_key_hook(key_hook, mlx, win);
+		mlx_key_hook(win, esc_hook, &map);
+		mlx_hook(map.win, 17, 0, esc_hook, (&mlx));
+		mlx_hook(win, 17, 0, (void *)close_hook, &map);
 		mlx_loop(mlx);
 	}
 	else
-		perror("Usage: ./fdf map.fdf");
+		write(2, "Usage: ./fdf map.fdf\n", 22);
 	return (0);
 }
