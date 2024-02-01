@@ -22,7 +22,7 @@ FILES		= main ft_atoi_base init parse_map draw_map rendering
 GNL_FILES	= $(addprefix $(GNL_DIR), get_next_line.c get_next_line_utils.c)
 
 MLX_HEADER	= mlx/
-HEADER		= includes/
+HEADER		= inc/
 INCLUDE		= -I$(HEADER) -I$(MLX_HEADER) -I$(LIB_H)
 
 SRCS		= $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES))) $(GNL_FILES)
@@ -31,10 +31,10 @@ MINILIB		= mlx/
 LIB_H		= libft/
 LIBFT_DIR	= libft
 
-%.o: %.c $(HEADER) $(MLX_HEADER) $(LIB_H) Makefile
-	$(CC) $(CFLAGS) $(INCLUDE) -lmlx -c $< -o $@
+%.o:	%.c $(HEADER)fdf.h $(MLX_HEADER)mlx.h $(LIB_H)libft.h Makefile
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-${NAME}: libft.a libmlx.a ${OBJS} inc/fdf.h
+${NAME}: libft.a libmlx.a ${OBJS}
 	$(CC) $(CFLAGS) -o ${NAME} ${OBJS} $(INCLUDE) -L $(MLX_DIR) -lmlx -L $(LIBFT_DIR) -lft -lm -framework AppKit -framework OpenGL
 
 libmlx.a:
